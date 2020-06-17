@@ -23,11 +23,11 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install shrine-storage
+    $ gem install shrine-storage-azureblob
 
 ## Usage
 
-- **Create file _config/initilizers/shine.rb_**
+- **Create file _config/initializers/shrine.rb_**
 ```ruby
 require 'shrine'
 require 'shrine/storage/redis'

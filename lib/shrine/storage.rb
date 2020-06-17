@@ -3,7 +3,7 @@
 require 'shrine/storage/version'
 require 'shrine/storage/azure_blob'
 
-module Shrine
+class Shrine
   module Storage
     class Error < StandardError; end
   end

@@ -5,22 +5,22 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'shrine/storage/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = 'shrine-storage'
+  spec.name          = 'shrine-storage-azureblob'
   spec.version       = Shrine::Storage::VERSION
-  spec.authors       = ['Dmitriy Bielorusov', 'Syndicode LLC']
-  spec.email         = ['d.belorusov@gmail.com', 'info@syndicode.com']
+  spec.authors       = ['Ralf Vitasek', 'TQsoft GmbH', 'Dmitriy Bielorusov', 'Syndicode LLC']
+  spec.email         = ['info@tqsoft.de', 'd.belorusov@gmail.com', 'info@syndicode.com']
 
   spec.summary       = 'Extend existing shrine gem with using official azure-storage-blob SDK'
   spec.description   = 'Extend existing shrine gem with using official azure-storage-blob SDK'
-  spec.homepage      = 'https://github.com/Syndicode/shrine-storage.git'
+  spec.homepage      = 'https://github.com/TQsoft-GmbH/shrine-storage-azureblob'
   spec.license       = 'MIT'
 
   if spec.respond_to?(:metadata)
     # spec.metadata['allowed_push_host'] = ''
 
     spec.metadata['homepage_uri'] = spec.homepage
-    spec.metadata['source_code_uri'] = 'https://github.com/Syndicode/azure-storage.git'
-    spec.metadata['changelog_uri'] = 'https://github.com/Syndicode/azure-storage.git'
+    spec.metadata['source_code_uri'] = 'https://github.com/TQsoft-GmbH/shrine-storage-azureblob'
+    spec.metadata['changelog_uri'] = 'https://github.com/TQsoft-GmbH/shrine-storage-azureblob'
   else
     raise 'RubyGems 2.0 or newer is required to protect against ' \
       'public gem pushes.'
@@ -34,6 +34,7 @@ Gem::Specification.new do |spec|
 
   spec.bindir        = 'exe'
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
+
   spec.require_paths = ['lib']
 
   spec.add_development_dependency 'bundler', '~> 2.0.2'
@@ -41,6 +42,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rake', '~> 10.0'
   spec.add_development_dependency 'rubocop'
 
-  spec.add_dependency 'azure-storage-blob', '~> 1.1.0'
-  spec.add_dependency 'nokogiri', '>= 1.10.8'
+  spec.add_dependency "shrine"
+  spec.add_dependency 'nokogiri', '>= 1.10.9'
+  spec.add_dependency 'azure-storage-blob', '~> 2.0.0'
 end
