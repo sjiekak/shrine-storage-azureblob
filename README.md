@@ -1,7 +1,7 @@
 # Shrine::Storage::AzureBlob
-_Provided memory leakless interface for AzureBlob images/files processing within SHRINE_
 
-![Mem leak](https://user-images.githubusercontent.com/1485240/66502907-dc32f380-eace-11e9-89f5-872b0d44b0ee.png)
+This Gem was forked from https://github.com/Syndicode/shrine-storage
+Due to some small bugs from a typo and MIME type wasn't set
 
 ## Installation
 
@@ -9,11 +9,7 @@ Add this lines to your application's Gemfile:
 ```ruby
 ...
 gem 'shrine', '~> 2.11'
-gem 'azure-storage-blob'
-gem 'shrine-redis'
-gem 'image_processing', '~> 1.7.1'
-gem 'shrine-storage'
-gem 'sidekiq'
+gem 'shrine-storage-azureblob'
 ...
 ```
 
