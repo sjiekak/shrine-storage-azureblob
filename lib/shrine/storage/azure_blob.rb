@@ -11,9 +11,12 @@ require 'tempfile'
 class Shrine
   module Storage
     class AzureBlob
-      attr_reader :client, :account_name, :access_key, :container_name, :multipart_threshold, :public
 
-      def initialize(account_name: nil, access_key: nil, container_name: nil, multipart_threshold: {}, public: nil)
+      attr_reader :client, :account_name, :access_key, :container_name,
+                  :multipart_threshold, :public, :scheme
+
+      def initialize(account_name: nil, access_key: nil, container_name: nil, 
+                     multipart_threshold: {}, public: nil, scheme: nil)
         @access_key = access_key
         @account_name = account_name
         @container_name = container_name
@@ -24,6 +27,7 @@ class Shrine
           storage_access_key: access_key
         )
         @public = public
+        @scheme = scheme || 'https'
       end
 
       def upload(io, id, shrine_metadata: {}, **_upload_options)
@@ -68,9 +72,9 @@ class Shrine
       # :public
       # :  Returns the unsigned URL to the S3 object. This requires the S3
       #    object to be public.
-      def url(id, public: self.public, **options)
+      def url(id, public: self.public, scheme: self.scheme, **options)
         uri = @client.generate_uri("#{container_name}/#{id}")
-        uri.scheme = options[:scheme] || 'https'
+        uri.scheme = scheme.to_s
         unless public
           uri.query = @sas.generate_service_sas_token(
             uri.path,

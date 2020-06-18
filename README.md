@@ -29,6 +29,8 @@ require 'shrine'
 require "shrine/storage/azure_blob"
 
 azure_options = {
+  public: false,  # optional: dafault to false - can be set to true (if storage blob is public readable)
+  scheme: :https, # optional: defaults to https - http possible if storage blob is configured for non secure access
   account_name: ENV.fetch('AZURE_ACCOUNT_NAME'),
   access_key: ENV.fetch('AZURE_ACCESS_KEY'),
   container_name: ENV.fetch('AZURE_CONTAINER')
@@ -39,6 +41,14 @@ Shrine.storages = {
   store: Shrine::Storage::AzureBlob.new(**azure_options)
 }
 ```
+
+- **Acessing the `url`**
+```
+  # assuming your instance has a file these optional arguments may be used
+  # expiry must be a Time turned to String
+  instance.file.url(public: false, scheme: :https, expiry: 24.hours.from_now.to_s)
+```
+
 - **Additional info:**
 [Shrine Docs](https://github.com/shrinerb/shrine/blob/master/README.md)
 [AzureStorageBlob Docs](https://github.com/Azure/azure-storage-ruby/blob/master/blob/README.md)
