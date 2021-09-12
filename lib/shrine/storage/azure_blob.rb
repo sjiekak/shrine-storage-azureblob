@@ -12,21 +12,15 @@ class Shrine
   module Storage
     class AzureBlob
 
-      attr_reader :client, :account_name, :access_key, :container_name,
-                  :multipart_threshold, :public, :scheme
+      attr_reader :client, :container_name, :scheme
 
-      def initialize(account_name: nil, access_key: nil, container_name: nil, 
-                     multipart_threshold: {}, public: nil, scheme: nil)
-        @access_key = access_key
-        @account_name = account_name
+      def initialize(account_name: nil, access_key: nil, container_name: nil, scheme: nil)
         @container_name = container_name
-        @multipart_threshold = multipart_threshold
         @sas = Azure::Storage::Common::Core::Auth::SharedAccessSignature.new account_name, access_key
         @client = Azure::Storage::Blob::BlobService.create(
           storage_account_name: account_name,
           storage_access_key: access_key
         )
-        @public = public
         @scheme = scheme || 'https'
       end
 
@@ -69,21 +63,9 @@ class Shrine
         @client.delete_blob(container_name, id)
       end
 
-      # :public
-      # :  Returns the unsigned URL to the S3 object. This requires the S3
-      #    object to be public.
-      def url(id, public: self.public, scheme: self.scheme, **options)
+      def url(id, scheme: self.scheme, **options)
         uri = @client.generate_uri("#{container_name}/#{id}")
         uri.scheme = scheme.to_s
-        unless public
-          uri.query = @sas.generate_service_sas_token(
-            uri.path,
-            service: 'b', # blob
-            protocol: uri.scheme,
-            permissions: 'r', # read
-            **options # expiry: 30.minutes.from_now.to_s # as Time to string
-          )
-        end
         uri.to_s
       end
 
