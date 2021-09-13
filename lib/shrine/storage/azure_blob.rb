@@ -54,8 +54,8 @@ class Shrine
       def open(id, _rewindable: false, **_options)
         _blob, content = @client.get_blob(container_name, id)
         StringIO.new(content)
-      rescue Azure::Core::Http::HTTPError
-        raise Shrine::FileNotFound, "file #{id.inspect} not found on storage"
+      rescue Azure::Core::Http::HTTPError => e
+        raise Shrine::FileNotFound, "file #{id} not found on storage #{ e.message }"
       end
 
       def put(io, id, **_options)
@@ -64,12 +64,13 @@ class Shrine
             @client.create_block_blob(container_name, id, file.read, timeout: 30, **_options)
           end
         else
-          @client.create_block_blob(container_name, id, io.to_io, **_options)
+          @client.create_block_blob(container_name, id, io.read, **_options)
         end
       end
 
       def delete(id)
         @client.delete_blob(container_name, id)
+      rescue Azure::Core::Http::HTTPError
       end
 
       def url(id, scheme: self.scheme, **options)
