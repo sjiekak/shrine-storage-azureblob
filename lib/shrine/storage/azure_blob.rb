@@ -12,15 +12,16 @@ class Shrine
   module Storage
     class AzureBlob
 
-      attr_reader :client, :container_name, :scheme
+      attr_reader :client, :container_name, :scheme, :public
 
-      def initialize(account_name: nil, access_key: nil, container_name: nil, scheme: nil)
+      def initialize(account_name: nil, access_key: nil, container_name: nil, public: nil, scheme: nil)
         @container_name = container_name
         @sas = Azure::Storage::Common::Core::Auth::SharedAccessSignature.new account_name, access_key
         @client = Azure::Storage::Blob::BlobService.create(
           storage_account_name: account_name,
           storage_access_key: access_key
         )
+        @public = public
         @scheme = scheme || 'https'
       end
 
@@ -72,8 +73,17 @@ class Shrine
       rescue Azure::Core::Http::HTTPError
       end
 
-      def url(id, scheme: self.scheme, **options)
+      def url(id, public: self.public, scheme: self.scheme, **options)
         uri = @client.generate_uri("#{container_name}/#{id}")
+
+        unless public
+          uri.query = @sas.generate_service_sas_token(
+            uri.path,
+            service: 'b', # blob
+            protocol: uri.scheme,
+            permissions: 'r' # read
+          )
+        end
         uri.scheme = scheme.to_s
         uri.to_s
       end
