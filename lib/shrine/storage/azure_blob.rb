@@ -29,6 +29,7 @@ class Shrine
         options = {}
         options[:content_type] = content_type if content_type
         options[:content_disposition] = ContentDisposition.inline(filename) if filename
+        options[:metadata] = shrine_metadata
 
         put(io, id, **options)
       end
@@ -43,10 +44,18 @@ class Shrine
         end
       end
 
+      def exists?(id)
+        @client.get_blob_metadata(container_name, id)
+        return true
+      rescue Azure::Core::Http::HTTPError
+          return false
+      end
+
       def open(id, _rewindable: false, **_options)
-        GC.start
         _blob, content = @client.get_blob(container_name, id)
         StringIO.new(content)
+      rescue Azure::Core::Http::HTTPError
+        raise Shrine::FileNotFound, "file #{id.inspect} not found on storage"
       end
 
       def put(io, id, **_options)
