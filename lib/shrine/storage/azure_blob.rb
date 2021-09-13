@@ -29,7 +29,6 @@ class Shrine
         options = {}
         options[:content_type] = content_type if content_type
         options[:content_disposition] = ContentDisposition.inline(filename) if filename
-        options[:metadata] = shrine_metadata
 
         put(io, id, **options)
       end
