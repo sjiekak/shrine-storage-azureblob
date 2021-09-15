@@ -4,7 +4,7 @@ require "./lib/shrine/storage/azure_blob"
 
 describe Shrine::Storage::AzureBlob do
   subject {
-    Shrine::Storage::AzureBlob::create_development("test-container", create_container = true)
+    Shrine::Storage::AzureBlob::create_development(container_name:"test-container", create_container:true)
   }
 
   describe "#satisfy_shrine_storage_linter" do

@@ -34,7 +34,7 @@ class Shrine
         # * +proxy_uri+    - String. emulator url if emulator is hosted other than localhost.
         #
         # @return [Shrine::Storage::AzureBlob]
-        def create_development(container_name, create_container=false, proxy_uri=nil)
+        def create_development(container_name:, create_container:false, proxy_uri:nil)
           client = Azure::Storage::Blob::BlobService.create_development(proxy_uri)
           if create_container
             begin
@@ -139,7 +139,7 @@ class Shrine
             uri.path,
             service: "b", # blob
             protocol: uri.scheme,
-            permissions: "r", # read
+            permissions: "rw", # read
           )
         end
         uri.to_s
