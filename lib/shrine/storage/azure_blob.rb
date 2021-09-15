@@ -20,7 +20,7 @@ class Shrine
         @container_name = container_name
         @sas = Azure::Storage::Common::Core::Auth::SharedAccessSignature.new account_name, access_key
         @client = client
-        @public = public || true
+        @public = public || false
         @scheme = scheme || "https"
       end
 
@@ -34,7 +34,7 @@ class Shrine
         # * +proxy_uri+    - String. emulator url if emulator is hosted other than localhost.
         #
         # @return [Shrine::Storage::AzureBlob]
-        def create_development(container_name,  create_container=false, proxy_uri=nil)
+        def create_development(container_name, create_container=false, proxy_uri=nil)
           client = Azure::Storage::Blob::BlobService.create_development(proxy_uri)
           if create_container
             begin
@@ -49,8 +49,7 @@ class Shrine
             uri = URI(proxy_uri)
             scheme = uri.scheme
           end
-          public = scheme == "http"
-          AzureBlob.new(container_name, client, public:public, scheme:scheme)
+          AzureBlob.new(container_name, client, public:false, scheme:scheme)
         end
 
         # Create storage using the storage account name and access key
