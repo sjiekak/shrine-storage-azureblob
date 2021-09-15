@@ -7,20 +7,20 @@ require 'shrine/storage/version'
 Gem::Specification.new do |spec|
   spec.name          = 'shrine-storage-azureblob'
   spec.version       = Shrine::Storage::VERSION
-  spec.authors       = ['Ralf Vitasek', 'TQsoft GmbH', 'Dmitriy Bielorusov', 'Syndicode LLC']
-  spec.email         = ['info@tqsoft.de', 'd.belorusov@gmail.com', 'info@syndicode.com']
+  spec.authors       = ['Steve Jiekak', 'Ralf Vitasek', 'TQsoft GmbH', 'Dmitriy Bielorusov', 'Syndicode LLC']
+  spec.email         = ['devaureshy@gmail.com', 'info@tqsoft.de', 'd.belorusov@gmail.com', 'info@syndicode.com']
 
   spec.summary       = 'Extend existing shrine gem with using official azure-storage-blob SDK'
   spec.description   = 'Extend existing shrine gem with using official azure-storage-blob SDK'
-  spec.homepage      = 'https://github.com/TQsoft-GmbH/shrine-storage-azureblob'
+  spec.homepage      = 'https://github.com/sjiekak/shrine-storage-azureblob'
   spec.license       = 'MIT'
 
   if spec.respond_to?(:metadata)
     # spec.metadata['allowed_push_host'] = ''
 
     spec.metadata['homepage_uri'] = spec.homepage
-    spec.metadata['source_code_uri'] = 'https://github.com/TQsoft-GmbH/shrine-storage-azureblob'
-    spec.metadata['changelog_uri'] = 'https://github.com/TQsoft-GmbH/shrine-storage-azureblob'
+    spec.metadata['source_code_uri'] = 'https://github.com/sjiekak/shrine-storage-azureblob'
+    spec.metadata['changelog_uri'] = 'https://github.com/sjiekak/shrine-storage-azureblob'
   else
     raise 'RubyGems 2.0 or newer is required to protect against ' \
       'public gem pushes.'
