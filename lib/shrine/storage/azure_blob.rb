@@ -130,6 +130,12 @@ class Shrine
       rescue Azure::Core::Http::HTTPError
       end
 
+      def delete_objects(objects)
+        objects.each do |object|
+          delete(object.name)
+        end
+      end
+
       def url(id, public: self.public, scheme: self.scheme, **options)
         uri = @client.generate_uri("#{container_name}/#{id}")
 
@@ -143,6 +149,21 @@ class Shrine
           )
         end
         uri.to_s
+      end
+
+      # If block is given, deletes all objects from the storage for which the
+      # block evaluates to true. Otherwise deletes all objects from the storage.
+      #
+      #     ab.clear!
+      #     # or
+      #     ab.clear! do |object|
+      #         Time.parse(object.properties[:last_modified]) < Time.now - 7*24*60*60
+      #     end
+      def clear!(&block)
+        objects_to_delete = @client.list_blobs(container_name)
+        objects_to_delete = objects_to_delete.select(&block) if block
+
+        delete_objects(objects_to_delete)
       end
 
       class Tempfile < ::Tempfile
